@@ -9,6 +9,12 @@
 - JavaScript syntax validation passed with node --check.
 - The valid close-fight planning benchmark includes 200 requests after 10 warmups; exact measurements are in benchmark_v2.json. Runtime is machine-specific and excludes source/network delay.
 
+### ML validation
+
+- Tuned core XGBoost, 5-fold grouped out-of-fold evaluation on 50,000 rows: 81.5% accuracy (`reports/ml/core_tuned_oof/metrics.json`, `accuracy` 0.81482).
+- Uncertainty gate (0.85 minimum-coverage rule): ~86% accuracy at 85.2% coverage when allowed to abstain on the most ambiguous 14.8% of cases (`reports/ml/core_abstention/abstention_report.json`: coverage 0.85246, abstain_rate 0.14754, accuracy 0.8629).
+- Methodology: grouped cross-validation on source groups, then multiclass temperature scaling fitted on the same grouped OOF folds (`reports/ml/core_calibration/temperature_calibration.json`). The ML layer is a candidate generator only; it never bypasses the deterministic feasibility shield. Teacher-policy bootstrap, not real-race outcome validation.
+
 ## Not claimed
 
 - Browser screenshot review, responsive rendering, keyboard navigation and native file dialogs were not executed. The provided cloud browser returned ERR_BLOCKED_BY_CLIENT for the local URL. The DOM double is not a rendering engine.

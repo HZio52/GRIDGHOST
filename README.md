@@ -32,7 +32,7 @@ For Linux/macOS use `python3.12 -m venv .venv` and replace `.\.venv\Scripts\pyth
 
 ### 1. Pit wall
 
-The application checks the backend connection, loads the first synthetic scenario and calculates a plan. The page displays the recommended first action, an explanation, energy forecast, conservative finish, action sequence and rival-pace weights.
+The application checks the backend connection, loads the first synthetic scenario and calculates a plan. The page displays the recommended first action, an explanation, energy forecast, conservative finish, action sequence and rival-pace weights. The pit wall also has an **ML CANDIDATE** panel (prediction, probabilities, deterministic-shield verdict) and a local two-voice radio call on Evaluate / Save; both use cached model output and on-device audio, with no network TTS.
 
 - Change the scenario: Close fight / Protect the reserve / Pressure from behind / Wait for the window / Caution period / Stale telemetry.
 - Edit speed, signed gap, energy, data age, track status, terminal buffer or horizon.

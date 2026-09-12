@@ -30,14 +30,15 @@ const context=vm.createContext({document,console,fetch:(path,opts)=>fetch(new UR
 vm.runInContext(fs.readFileSync('web/app.js','utf8'),context);
 async function idle(){for(let i=0;i<1000;i++){if(!vm.runInContext('busy',context))return;await new Promise(r=>setTimeout(r,10));}throw Error('UI task timeout');}
 function noError(){assert(els.error.hidden,els.error.textContent);}
-await idle();noError();assert.equal(els.action.textContent,'ATTACK');
+await idle();noError();assert.equal(els.action.textContent,'NO CALL');
+assert.equal(els['decision-status'].textContent,'NO CALL');
+els.scenario.value='yellow_flag';await els.scenario.onchange();noError();assert.equal(els.action.textContent,'NO CALL');
+els.scenario.value='low_energy';await els.scenario.onchange();noError();assert.equal(els.action.textContent,'HOLD');
 assert(els['energy-chart'].innerHTML.includes('<svg'));
-els.scenario.value='yellow_flag';await els.scenario.onchange();noError();assert.equal(els.action.textContent,'NO RECOMMENDATION');
-els.scenario.value='close_fight_s07';await els.scenario.onchange();
 await els.save.onclick();noError();assert(els.toast.textContent.includes('saved'));
-await els['refresh-history'].onclick();noError();assert(els.history.innerHTML.includes('ATTACK'));
+await els['refresh-history'].onclick();noError();assert(els.history.innerHTML.includes('HOLD'));
 await els['replay-step'].onclick();noError();assert(els['replay-progress'].textContent.startsWith('1 /'));
-await els.compare.onclick();noError();assert(els['comparison-results'].innerHTML.includes('Reserve-aware HOLD'));
+await els.compare.onclick();noError();assert(els['comparison-results'].innerHTML.includes('HOLD-if-low'));
 assert(els['compare-energy'].innerHTML.includes('<svg'));
 console.log('PASS: actual client script + live API: initial plan, caution abstention, save, history, replay, simulation, SVG creation.');
 console.log('LIMIT: minimal DOM double; no rendered browser or native file-dialog verification.');

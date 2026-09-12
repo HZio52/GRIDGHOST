@@ -1,8 +1,8 @@
 [
   {
     "id": "close_fight_s07",
-    "name": "Close fight",
-    "description": "Rival ahead; compare deployment plans.",
+    "name": "Tight gap",
+    "description": "Rival just ahead. Tight fight — the model often says NO CALL if it is unsure.",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
@@ -23,8 +23,8 @@
   },
   {
     "id": "low_energy",
-    "name": "Protect the reserve",
-    "description": "Limited energy makes the future buffer matter.",
+    "name": "Low energy",
+    "description": "Battery is low. HOLD is likely so we keep the reserve.",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
@@ -45,16 +45,16 @@
   },
   {
     "id": "defence",
-    "name": "Pressure from behind",
-    "description": "A rival is within the defence window.",
+    "name": "Rival behind",
+    "description": "A car behind is close. Next call should be PROBE (cover, medium deploy).",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
         "timestamp_s": 1,
         "own_speed_kph": 300,
-        "rival_speed_kph": 306,
-        "gap_s": -0.5,
-        "own_energy_mj": 2.4,
+        "rival_speed_kph": 298,
+        "gap_s": -0.3,
+        "own_energy_mj": 2.8,
         "track_status": "GREEN",
         "energy_uncertainty_mj": 0.1,
         "recovery_kw": 10,
@@ -67,15 +67,15 @@
   },
   {
     "id": "future_window",
-    "name": "Wait for the window",
-    "description": "Attack unavailable now; opens after eight seconds.",
+    "name": "Clear pass",
+    "description": "Rival just ahead, enough energy. Next call should be COMMIT (full deploy).",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
         "timestamp_s": 1,
         "own_speed_kph": 300,
-        "rival_speed_kph": 302,
-        "gap_s": 0.7,
+        "rival_speed_kph": 305,
+        "gap_s": 0.3,
         "own_energy_mj": 2.4,
         "track_status": "GREEN",
         "energy_uncertainty_mj": 0.1,
@@ -84,24 +84,13 @@
         "data_age_s": 0,
         "quality": 1
       },
-      "planning": {
-        "attack_windows": [
-          false,
-          false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true
-        ]
-      }
+      "planning": {}
     }
   },
   {
     "id": "yellow_flag",
-    "name": "Caution period",
-    "description": "No advice until track status is confirmed GREEN.",
+    "name": "Yellow flag",
+    "description": "Track is YELLOW (caution). No deploy call until GREEN.",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
@@ -122,8 +111,8 @@
   },
   {
     "id": "stale_feed",
-    "name": "Stale telemetry",
-    "description": "An old snapshot must not trigger an aggressive recommendation.",
+    "name": "Old snapshot",
+    "description": "Data is 12 seconds old. Too old for a deploy call.",
     "source": "Synthetic demonstration",
     "request": {
       "state": {
