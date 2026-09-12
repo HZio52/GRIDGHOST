@@ -1,0 +1,74 @@
+[
+  {
+    "variant": "core_brake",
+    "feature_count": 11,
+    "macro_f1_mean": 0.7762824714687696,
+    "macro_f1_std": 0.003544086440792924,
+    "accuracy_mean": 0.8070468751545306,
+    "log_loss_mean": 0.4325666129589081,
+    "attack_f1_mean": 0.7742314285093975,
+    "defend_f1_mean": 0.8814190578959422,
+    "hold_f1_mean": 0.8156584081271957,
+    "conserve_f1_mean": 0.6338209913425429
+  },
+  {
+    "variant": "core_throttle",
+    "feature_count": 12,
+    "macro_f1_mean": 0.7761959364682888,
+    "macro_f1_std": 0.002650861480555647,
+    "accuracy_mean": 0.8066845000425873,
+    "log_loss_mean": 0.4332347571849823,
+    "attack_f1_mean": 0.7729578180568439,
+    "defend_f1_mean": 0.8812802122049981,
+    "hold_f1_mean": 0.8151362186389797,
+    "conserve_f1_mean": 0.6354094969723337
+  },
+  {
+    "variant": "core",
+    "feature_count": 9,
+    "macro_f1_mean": 0.7757517387501778,
+    "macro_f1_std": 0.0028184267130005975,
+    "accuracy_mean": 0.8061639665420678,
+    "log_loss_mean": 0.433718204498291,
+    "attack_f1_mean": 0.7721181786299758,
+    "defend_f1_mean": 0.8805485012308212,
+    "hold_f1_mean": 0.8146531062749505,
+    "conserve_f1_mean": 0.6356871688649637
+  },
+  {
+    "variant": "core_temporal",
+    "feature_count": 13,
+    "macro_f1_mean": 0.7749254992352903,
+    "macro_f1_std": 0.00180211413805826,
+    "accuracy_mean": 0.8051582963600872,
+    "log_loss_mean": 0.435560005903244,
+    "attack_f1_mean": 0.7712739204401073,
+    "defend_f1_mean": 0.8808335812598024,
+    "hold_f1_mean": 0.8131393244148386,
+    "conserve_f1_mean": 0.6344551708264128
+  },
+  {
+    "variant": "core_powertrain",
+    "feature_count": 16,
+    "macro_f1_mean": 0.7748160102959578,
+    "macro_f1_std": 0.0027465674432912653,
+    "accuracy_mean": 0.8055855209245271,
+    "log_loss_mean": 0.4352967441082001,
+    "attack_f1_mean": 0.7697233079474864,
+    "defend_f1_mean": 0.881289750642378,
+    "hold_f1_mean": 0.8142170224981073,
+    "conserve_f1_mean": 0.6340339600958592
+  },
+  {
+    "variant": "full",
+    "feature_count": 25,
+    "macro_f1_mean": 0.773970526461243,
+    "macro_f1_std": 0.0023263155178777275,
+    "accuracy_mean": 0.8049164998406896,
+    "log_loss_mean": 0.4387784481048584,
+    "attack_f1_mean": 0.768735245531923,
+    "defend_f1_mean": 0.8806672408103762,
+    "hold_f1_mean": 0.8137550883916997,
+    "conserve_f1_mean": 0.6327245311109733
+  }
+]

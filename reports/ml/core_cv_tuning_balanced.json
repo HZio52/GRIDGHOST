@@ -1,0 +1,33 @@
+{
+  "model": "GRIDGHOST Balanced Core XGBoost",
+  "feature_count": 9,
+  "features": [
+    "own_speed_kph",
+    "rival_speed_kph",
+    "speed_delta_kph",
+    "gap_s",
+    "gap_rate_s_per_s",
+    "own_energy_mj",
+    "energy_uncertainty_mj",
+    "recovery_kw",
+    "recovery_uncertainty_kw"
+  ],
+  "training_rows": 50000,
+  "source_groups": 29,
+  "cv_folds": 5,
+  "optuna_trials": 30,
+  "class_weighting": "balanced",
+  "best_cv_macro_f1": 0.7771249150171682,
+  "best_params": {
+    "n_estimators": 277,
+    "max_depth": 8,
+    "learning_rate": 0.1695390662785476,
+    "min_child_weight": 4.811302112433359,
+    "subsample": 0.8143575207945121,
+    "colsample_bytree": 0.9404052868155783,
+    "gamma": 0.24668360275685697,
+    "reg_alpha": 0.07362153695003483,
+    "reg_lambda": 1.1996747828236556
+  },
+  "label_source": "GRIDGHOST V2 mathematical planner (bootstrap only)"
+}

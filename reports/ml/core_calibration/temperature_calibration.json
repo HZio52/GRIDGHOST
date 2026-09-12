@@ -1,0 +1,69 @@
+{
+  "method": "multiclass temperature scaling",
+  "labels": [
+    "ATTACK",
+    "DEFEND",
+    "HOLD",
+    "CONSERVE"
+  ],
+  "rows": 50000,
+  "calibration_evaluation": "cross-fitted using existing grouped OOF folds",
+  "ece_bins": 15,
+  "raw": {
+    "accuracy": 0.81482,
+    "log_loss": 0.41946184615809967,
+    "brier": 0.25778712563578554,
+    "top_label_ece": 0.008253479974928599
+  },
+  "calibrated": {
+    "accuracy": 0.81482,
+    "log_loss": 0.4189660964398235,
+    "brier": 0.25792988319328236,
+    "top_label_ece": 0.008372784324211043
+  },
+  "final_temperature": 0.9449140098756145,
+  "fold_results": [
+    {
+      "fold": 1,
+      "temperature": 0.9512474751095815,
+      "raw_log_loss": 0.40960154931098447,
+      "calibrated_log_loss": 0.408656059641024,
+      "raw_ece": 0.009039884914382755,
+      "calibrated_ece": 0.008248396698557179
+    },
+    {
+      "fold": 2,
+      "temperature": 0.9506940114371867,
+      "raw_log_loss": 0.417115055355828,
+      "calibrated_log_loss": 0.41618769852567805,
+      "raw_ece": 0.011397588835756074,
+      "calibrated_ece": 0.009189709654680469
+    },
+    {
+      "fold": 3,
+      "temperature": 0.9399497449730279,
+      "raw_log_loss": 0.41760724232287727,
+      "calibrated_log_loss": 0.4174746293543928,
+      "raw_ece": 0.009974388089090982,
+      "calibrated_ece": 0.01324012627389922
+    },
+    {
+      "fold": 4,
+      "temperature": 0.9419627523281006,
+      "raw_log_loss": 0.4239181603971575,
+      "calibrated_log_loss": 0.42361878944579956,
+      "raw_ece": 0.010158989547011204,
+      "calibrated_ece": 0.01281491359534338
+    },
+    {
+      "fold": 5,
+      "temperature": 0.9407948046325776,
+      "raw_log_loss": 0.43094708715476615,
+      "calibrated_log_loss": 0.4308256778111878,
+      "raw_ece": 0.012562457672996963,
+      "calibrated_ece": 0.012981283021802988
+    }
+  ],
+  "deployment_note": "For inference, obtain raw multiclass XGBoost margins, divide every class margin by final_temperature, then apply softmax. Do not apply temperature scaling directly to already-softmaxed probabilities.",
+  "warning": "Calibration is based on bootstrap teacher-policy OOF predictions. A fresh unseen race/session is still required for external validation."
+}

@@ -1,0 +1,65 @@
+{
+  "model": "GRIDGHOST Tuned Core XGBoost",
+  "probability_source": "raw grouped OOF probabilities",
+  "rows": 50000,
+  "baseline_accuracy": 0.81482,
+  "baseline_macro_f1": 0.7841081948071248,
+  "recommended_interpretation": "Rows failing the uncertainty gate should produce REASSESS rather than forcing ATTACK/DEFEND/HOLD/CONSERVE.",
+  "candidate_rules": [
+    {
+      "minimum_coverage": 0.95,
+      "probability_threshold": 0.5,
+      "margin_threshold": 0.05,
+      "coverage": 0.9529,
+      "abstain_rate": 0.0471,
+      "accuracy": 0.831293944800084,
+      "macro_f1": 0.8015912293742621
+    },
+    {
+      "minimum_coverage": 0.9,
+      "probability_threshold": 0.55,
+      "margin_threshold": 0.15,
+      "coverage": 0.90128,
+      "abstain_rate": 0.09872,
+      "accuracy": 0.8473726255991478,
+      "macro_f1": 0.8178083399623096
+    },
+    {
+      "minimum_coverage": 0.85,
+      "probability_threshold": 0.55,
+      "margin_threshold": 0.25,
+      "coverage": 0.85246,
+      "abstain_rate": 0.14754,
+      "accuracy": 0.8629378504563264,
+      "macro_f1": 0.8322689679732274
+    },
+    {
+      "minimum_coverage": 0.8,
+      "probability_threshold": 0.65,
+      "margin_threshold": 0.05,
+      "coverage": 0.80578,
+      "abstain_rate": 0.19422,
+      "accuracy": 0.8776340936732111,
+      "macro_f1": 0.8469345163911853
+    },
+    {
+      "minimum_coverage": 0.7,
+      "probability_threshold": 0.7,
+      "margin_threshold": 0.05,
+      "coverage": 0.7348,
+      "abstain_rate": 0.2652,
+      "accuracy": 0.8966521502449646,
+      "macro_f1": 0.8645870609625469
+    },
+    {
+      "minimum_coverage": 0.6,
+      "probability_threshold": 0.75,
+      "margin_threshold": 0.05,
+      "coverage": 0.6594,
+      "abstain_rate": 0.3406,
+      "accuracy": 0.9175310888686685,
+      "macro_f1": 0.885072528547021
+    }
+  ],
+  "warning": "Thresholds are derived from bootstrap teacher-policy OOF data and require validation on unseen race/session data."
+}

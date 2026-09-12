@@ -1,0 +1,5 @@
+,pred_ATTACK,pred_DEFEND,pred_HOLD,pred_CONSERVE
+actual_ATTACK,265,1,41,2
+actual_DEFEND,0,359,28,2
+actual_HOLD,131,47,677,69
+actual_CONSERVE,10,3,62,87
