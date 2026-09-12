@@ -1,0 +1,2 @@
+PASS: actual client script + live API: initial plan, caution abstention, save, history, replay, simulation, SVG creation.
+LIMIT: minimal DOM double; no rendered browser or native file-dialog verification.

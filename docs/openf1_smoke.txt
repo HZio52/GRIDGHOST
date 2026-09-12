@@ -1,0 +1,1 @@
+External OpenF1 historical smoke request returned HTTP 404. No successful real-data download is claimed. HTTP client and normalization behavior passed mocked contract tests. The included demo remains synthetic.
