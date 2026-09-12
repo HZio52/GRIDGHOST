@@ -1,0 +1,1387 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Race Strategy Lab",
+    "description": "Educational scenario planner. No car control; no verified FIA compliance. Simulated energy and unvalidated response models are explicitly labelled.",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/policy": {
+      "get": {
+        "summary": "Policy",
+        "operationId": "policy_v1_policy_get",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/demo": {
+      "get": {
+        "summary": "Demo",
+        "operationId": "demo_v1_demo_get",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/decide": {
+      "post": {
+        "summary": "Decision",
+        "operationId": "decision_v1_decide_post",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Decision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs": {
+      "post": {
+        "summary": "Create Run",
+        "operationId": "create_run_v1_runs_post",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{run_id}": {
+      "get": {
+        "summary": "Get Run",
+        "operationId": "get_run_v1_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{run_id}/steps": {
+      "post": {
+        "summary": "Step",
+        "operationId": "step_v1_runs__run_id__steps_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/State"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Decision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{run_id}/decisions": {
+      "get": {
+        "summary": "History",
+        "operationId": "history_v1_runs__run_id__decisions_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{run_id}/export.csv": {
+      "get": {
+        "summary": "Export",
+        "operationId": "export_v1_runs__run_id__export_csv_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 1,
+              "default": 1000,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/replay": {
+      "post": {
+        "summary": "Replay",
+        "operationId": "replay_v1_replay_post",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplayRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/scenarios": {
+      "get": {
+        "summary": "Scenarios",
+        "operationId": "scenarios_v2_scenarios_get",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/plan": {
+      "post": {
+        "summary": "Evaluate",
+        "operationId": "evaluate_v2_plan_post",
+        "parameters": [
+          {
+            "name": "save",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Save"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/compare": {
+      "post": {
+        "summary": "Simulation",
+        "operationId": "simulation_v2_compare_post",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/history": {
+      "get": {
+        "summary": "History",
+        "operationId": "history_v2_history_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Belief": {
+        "properties": {
+          "slow": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Slow",
+            "default": 0.3333333333333333
+          },
+          "neutral": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Neutral",
+            "default": 0.3333333333333333
+          },
+          "fast": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Fast",
+            "default": 0.3333333333333333
+          },
+          "updates": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Updates",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Belief"
+      },
+      "Candidate": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "deploy_kw": {
+            "type": "number",
+            "title": "Deploy Kw"
+          },
+          "expected_energy_mj": {
+            "type": "number",
+            "title": "Expected Energy Mj"
+          },
+          "worst_case_energy_mj": {
+            "type": "number",
+            "title": "Worst Case Energy Mj"
+          },
+          "expected_gap_s": {
+            "type": "number",
+            "title": "Expected Gap S"
+          },
+          "gap_std_s": {
+            "type": "number",
+            "title": "Gap Std S"
+          },
+          "progress_s": {
+            "type": "number",
+            "title": "Progress S"
+          },
+          "score_s": {
+            "type": "number",
+            "title": "Score S"
+          },
+          "valid": {
+            "type": "boolean",
+            "title": "Valid"
+          },
+          "rejection_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rejection Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "deploy_kw",
+          "expected_energy_mj",
+          "worst_case_energy_mj",
+          "expected_gap_s",
+          "gap_std_s",
+          "progress_s",
+          "score_s",
+          "valid",
+          "rejection_reasons"
+        ],
+        "title": "Candidate"
+      },
+      "CompareRequest": {
+        "properties": {
+          "request": {
+            "$ref": "#/components/schemas/PlanRequest"
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 7
+          },
+          "ticks": {
+            "type": "integer",
+            "maximum": 30.0,
+            "minimum": 3.0,
+            "title": "Ticks",
+            "default": 15
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request"
+        ],
+        "title": "CompareRequest"
+      },
+      "Decision": {
+        "properties": {
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "advisory",
+              "abstain"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/Candidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "belief": {
+            "$ref": "#/components/schemas/Belief"
+          },
+          "score_margin_s": {
+            "type": "number",
+            "title": "Score Margin S"
+          },
+          "engine_latency_ms": {
+            "type": "number",
+            "title": "Engine Latency Ms"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "default": "demo-v1"
+          },
+          "constraints_status": {
+            "type": "string",
+            "title": "Constraints Status",
+            "default": "model_policy; FIA rules not verified"
+          },
+          "uncertainty_label": {
+            "type": "string",
+            "title": "Uncertainty Label",
+            "default": "scenario spread; not calibrated success probability"
+          },
+          "provenance": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Provenance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "recommendation",
+          "status",
+          "reason",
+          "candidates",
+          "belief",
+          "score_margin_s",
+          "engine_latency_ms",
+          "provenance"
+        ],
+        "title": "Decision"
+      },
+      "DecisionRequest": {
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "belief": {
+            "$ref": "#/components/schemas/Belief"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "title": "DecisionRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PlanRequest": {
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "belief": {
+            "$ref": "#/components/schemas/Belief"
+          },
+          "planning": {
+            "$ref": "#/components/schemas/Planning"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state"
+        ],
+        "title": "PlanRequest"
+      },
+      "Planning": {
+        "properties": {
+          "stages": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 1.0,
+            "title": "Stages",
+            "default": 6
+          },
+          "stage_s": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Stage S",
+            "default": 4
+          },
+          "terminal_buffer_mj": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Terminal Buffer Mj",
+            "default": 0.25
+          },
+          "deployment_budget_mj": {
+            "type": "number",
+            "maximum": 20.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Deployment Budget Mj",
+            "default": 2.0
+          },
+          "attack_windows": {
+            "items": {
+              "type": "boolean"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 8,
+            "title": "Attack Windows"
+          },
+          "switch_cost_s": {
+            "type": "number",
+            "maximum": 0.5,
+            "minimum": 0.0,
+            "title": "Switch Cost S",
+            "default": 0.015
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Planning"
+      },
+      "Policy": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "const": "demo-v1",
+            "title": "Version",
+            "default": "demo-v1"
+          },
+          "horizon_s": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Horizon S",
+            "default": 8
+          },
+          "step_s": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.1,
+            "title": "Step S",
+            "default": 0.5
+          },
+          "capacity_mj": {
+            "type": "number",
+            "maximum": 20.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Capacity Mj",
+            "default": 4
+          },
+          "reserve_mj": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Reserve Mj",
+            "default": 0.6
+          },
+          "max_deploy_kw": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Max Deploy Kw",
+            "default": 120
+          },
+          "max_recovery_kw": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Max Recovery Kw",
+            "default": 50
+          },
+          "energy_price_s_per_mj": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Energy Price S Per Mj",
+            "default": 0.15
+          },
+          "uncertainty_penalty": {
+            "type": "number",
+            "maximum": 10.0,
+            "minimum": 0.0,
+            "title": "Uncertainty Penalty",
+            "default": 0.5
+          },
+          "max_data_age_s": {
+            "type": "number",
+            "maximum": 60.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Max Data Age S",
+            "default": 5
+          },
+          "min_quality": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Min Quality",
+            "default": 0.7
+          },
+          "speed_gain_mps_per_kw": {
+            "type": "number",
+            "maximum": 0.2,
+            "minimum": 0.0,
+            "title": "Speed Gain Mps Per Kw",
+            "default": 0.04
+          },
+          "pace_sigma_mps": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 0.5,
+            "title": "Pace Sigma Mps",
+            "default": 3
+          },
+          "min_score_margin_s": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Min Score Margin S",
+            "default": 0.005
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Policy"
+      },
+      "ReplayRequest": {
+        "properties": {
+          "states": {
+            "items": {
+              "$ref": "#/components/schemas/State"
+            },
+            "type": "array",
+            "maxItems": 2000,
+            "minItems": 1,
+            "title": "States"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "states"
+        ],
+        "title": "ReplayRequest"
+      },
+      "RunCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name",
+            "default": "close_fight_s07"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RunCreate"
+      },
+      "State": {
+        "properties": {
+          "timestamp_s": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Timestamp S",
+            "description": "Monotonic seconds on this replay/run clock"
+          },
+          "own_speed_kph": {
+            "type": "number",
+            "maximum": 450.0,
+            "minimum": 0.0,
+            "title": "Own Speed Kph"
+          },
+          "rival_speed_kph": {
+            "type": "number",
+            "maximum": 450.0,
+            "minimum": 0.0,
+            "title": "Rival Speed Kph"
+          },
+          "gap_s": {
+            "type": "number",
+            "maximum": 30.0,
+            "minimum": -30.0,
+            "title": "Gap S",
+            "description": "Positive: rival ahead. Negative: rival behind"
+          },
+          "own_energy_mj": {
+            "type": "number",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Own Energy Mj"
+          },
+          "energy_uncertainty_mj": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.0,
+            "title": "Energy Uncertainty Mj",
+            "default": 0.1
+          },
+          "recovery_kw": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Recovery Kw",
+            "default": 10
+          },
+          "recovery_uncertainty_kw": {
+            "type": "number",
+            "maximum": 500.0,
+            "minimum": 0.0,
+            "title": "Recovery Uncertainty Kw",
+            "default": 5
+          },
+          "data_age_s": {
+            "type": "number",
+            "maximum": 86400.0,
+            "minimum": 0.0,
+            "title": "Data Age S",
+            "default": 0
+          },
+          "quality": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Quality",
+            "description": "Caller-assigned data quality, not calibrated confidence",
+            "default": 1
+          },
+          "track_status": {
+            "type": "string",
+            "enum": [
+              "GREEN",
+              "YELLOW",
+              "RED",
+              "SC",
+              "VSC",
+              "UNKNOWN"
+            ],
+            "title": "Track Status",
+            "default": "UNKNOWN"
+          },
+          "speed_source": {
+            "type": "string",
+            "enum": [
+              "synthetic",
+              "openf1",
+              "user_supplied"
+            ],
+            "title": "Speed Source",
+            "default": "synthetic"
+          },
+          "gap_source": {
+            "type": "string",
+            "enum": [
+              "synthetic",
+              "openf1_adjacent_interval",
+              "user_supplied"
+            ],
+            "title": "Gap Source",
+            "default": "synthetic"
+          },
+          "energy_source": {
+            "type": "string",
+            "enum": [
+              "simulated",
+              "user_supplied",
+              "measured"
+            ],
+            "title": "Energy Source",
+            "default": "simulated"
+          },
+          "status_source": {
+            "type": "string",
+            "enum": [
+              "synthetic",
+              "user_supplied"
+            ],
+            "title": "Status Source",
+            "default": "synthetic"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "timestamp_s",
+          "own_speed_kph",
+          "rival_speed_kph",
+          "gap_s",
+          "own_energy_mj"
+        ],
+        "title": "State"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
