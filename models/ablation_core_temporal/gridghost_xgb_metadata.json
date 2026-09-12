@@ -1,0 +1,35 @@
+{
+  "model": "XGBoost multiclass policy imitation",
+  "labels": [
+    "ATTACK",
+    "DEFEND",
+    "HOLD",
+    "CONSERVE"
+  ],
+  "features": [
+    "own_speed_kph",
+    "rival_speed_kph",
+    "speed_delta_kph",
+    "gap_s",
+    "gap_rate_s_per_s",
+    "own_energy_mj",
+    "energy_uncertainty_mj",
+    "recovery_kw",
+    "recovery_uncertainty_kw",
+    "own_accel_kph_s",
+    "rival_accel_kph_s",
+    "speed_delta_roll_mean",
+    "speed_delta_roll_std"
+  ],
+  "label_source": "GRIDGHOST V2 mathematical planner (bootstrap only)",
+  "train_rows": 30927,
+  "validation_rows": 8804,
+  "test_rows": 10269,
+  "best_iteration": 499,
+  "validation_macro_f1": 0.746273678152054,
+  "test_macro_f1": 0.7560558493226321,
+  "test_accuracy": 0.7732008959002824,
+  "test_log_loss": 0.502514123916626,
+  "test_single_row_mean_latency_ms": 2.2678320499999245,
+  "warning": "High score means imitation of the teacher on synthetic/augmented states, not proven race performance."
+}
