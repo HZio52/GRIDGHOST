@@ -1,0 +1,145 @@
+[
+  {
+    "id": "close_fight_s07",
+    "name": "Close fight",
+    "description": "Rival ahead; compare deployment plans.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 302,
+        "gap_s": 0.7,
+        "own_energy_mj": 2.4,
+        "track_status": "GREEN",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 0,
+        "quality": 1
+      },
+      "planning": {}
+    }
+  },
+  {
+    "id": "low_energy",
+    "name": "Protect the reserve",
+    "description": "Limited energy makes the future buffer matter.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 302,
+        "gap_s": 0.7,
+        "own_energy_mj": 1.1,
+        "track_status": "GREEN",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 0,
+        "quality": 1
+      },
+      "planning": {}
+    }
+  },
+  {
+    "id": "defence",
+    "name": "Pressure from behind",
+    "description": "A rival is within the defence window.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 306,
+        "gap_s": -0.5,
+        "own_energy_mj": 2.4,
+        "track_status": "GREEN",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 0,
+        "quality": 1
+      },
+      "planning": {}
+    }
+  },
+  {
+    "id": "future_window",
+    "name": "Wait for the window",
+    "description": "Attack unavailable now; opens after eight seconds.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 302,
+        "gap_s": 0.7,
+        "own_energy_mj": 2.4,
+        "track_status": "GREEN",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 0,
+        "quality": 1
+      },
+      "planning": {
+        "attack_windows": [
+          false,
+          false,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    }
+  },
+  {
+    "id": "yellow_flag",
+    "name": "Caution period",
+    "description": "No advice until track status is confirmed GREEN.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 302,
+        "gap_s": 0.7,
+        "own_energy_mj": 2.4,
+        "track_status": "YELLOW",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 0,
+        "quality": 1
+      },
+      "planning": {}
+    }
+  },
+  {
+    "id": "stale_feed",
+    "name": "Stale telemetry",
+    "description": "An old snapshot must not trigger an aggressive recommendation.",
+    "source": "Synthetic demonstration",
+    "request": {
+      "state": {
+        "timestamp_s": 1,
+        "own_speed_kph": 300,
+        "rival_speed_kph": 302,
+        "gap_s": 0.7,
+        "own_energy_mj": 2.4,
+        "track_status": "GREEN",
+        "energy_uncertainty_mj": 0.1,
+        "recovery_kw": 10,
+        "recovery_uncertainty_kw": 5,
+        "data_age_s": 12,
+        "quality": 1
+      },
+      "planning": {}
+    }
+  }
+]
