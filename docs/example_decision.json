@@ -1,0 +1,75 @@
+{
+  "recommendation": "ATTACK",
+  "status": "advisory",
+  "reason": "ATTACK: model score -0.070s; worst-case energy 1.380 MJ; reserve 0.600 MJ. Engineer approval required for execution.",
+  "candidates": [
+    {
+      "action": "ATTACK",
+      "deploy_kw": 120.0,
+      "expected_energy_mj": 1.5199999999999994,
+      "worst_case_energy_mj": 1.3799999999999981,
+      "expected_gap_s": 0.5166053740281225,
+      "gap_std_s": 0.24239487476709393,
+      "progress_s": 0.1833946259718775,
+      "score_s": -0.06980281141166955,
+      "valid": true,
+      "rejection_reasons": []
+    },
+    {
+      "action": "DEFEND",
+      "deploy_kw": 80.0,
+      "expected_energy_mj": 1.8399999999999987,
+      "worst_case_energy_mj": 1.6999999999999984,
+      "expected_gap_s": 0.615583068063753,
+      "gap_std_s": 0.19614021613268562,
+      "progress_s": 0.084416931936247,
+      "score_s": -0.09765317613009598,
+      "valid": false,
+      "rejection_reasons": [
+        "defend_requires_rival_behind_within_1.5s"
+      ]
+    },
+    {
+      "action": "HOLD",
+      "deploy_kw": 40.0,
+      "expected_energy_mj": 2.159999999999998,
+      "worst_case_energy_mj": 2.0199999999999987,
+      "expected_gap_s": 0.714560762099381,
+      "gap_std_s": 0.15015929105264864,
+      "progress_s": -0.014560762099381064,
+      "score_s": -0.12564040762570566,
+      "valid": true,
+      "rejection_reasons": []
+    },
+    {
+      "action": "CONSERVE",
+      "deploy_kw": 0.0,
+      "expected_energy_mj": 2.479999999999998,
+      "worst_case_energy_mj": 2.339999999999999,
+      "expected_gap_s": 0.8681607620993804,
+      "gap_std_s": 0.15015929105264864,
+      "progress_s": -0.16816076209938047,
+      "score_s": -0.23124040762570505,
+      "valid": true,
+      "rejection_reasons": []
+    }
+  ],
+  "belief": {
+    "slow": 0.2707812792869421,
+    "neutral": 0.3826001388251732,
+    "fast": 0.3466185818878847,
+    "updates": 1
+  },
+  "score_margin_s": 0.05583759621403611,
+  "engine_latency_ms": 0.5524810003407765,
+  "model_version": "demo-v1",
+  "constraints_status": "model_policy; FIA rules not verified",
+  "uncertainty_label": "scenario spread; not calibrated success probability",
+  "provenance": {
+    "speed": "synthetic",
+    "gap": "synthetic",
+    "energy": "simulated",
+    "track_status": "synthetic",
+    "response_coefficients": "unvalidated demonstration assumptions"
+  }
+}

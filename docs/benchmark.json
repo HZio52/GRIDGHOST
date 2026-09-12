@@ -1,0 +1,30 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+    "processor": "x86_64"
+  },
+  "method": "Single client; mixed synthetic cases; 50 engine warmups; no external telemetry/network",
+  "engine": {
+    "count": 1000,
+    "p50_ms": 0.31151850043897866,
+    "p95_ms": 0.3345184999034245,
+    "p99_ms": 0.3578491201278666,
+    "max_ms": 0.4510689996095607
+  },
+  "in_process_api": {
+    "count": 200,
+    "p50_ms": 1.4180379998833814,
+    "p95_ms": 1.7853477498647399,
+    "p99_ms": 2.417899860538455,
+    "max_ms": 2.43958000010025
+  },
+  "in_process_api_with_sqlite": {
+    "count": 200,
+    "p50_ms": 1.8171280003116408,
+    "p95_ms": 2.4220496998623267,
+    "p99_ms": 3.1090862795463177,
+    "max_ms": 3.54928800061316
+  },
+  "limitations": "TestClient measures in-process requests, not real HTTP network, driver radio, or source delay."
+}

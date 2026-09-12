@@ -1,0 +1,367 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.39",
+  "scope": "200 valid close-fight plans; 10 warmups; single process; no network/source delay",
+  "planner": {
+    "n": 200,
+    "p50_ms": 3.8992485001472232,
+    "p95_ms": 4.661317099817097,
+    "p99_ms": 5.51328338987332,
+    "max_ms": 6.043317000148818
+  },
+  "simulation": {
+    "seed": 7,
+    "duration_s": 60,
+    "results": [
+      {
+        "controller": "Planner",
+        "final_energy_mj": 0.9199999999999994,
+        "final_gap_s": 0.7977962071785478,
+        "progress_s": -0.09779620717854787,
+        "reserve_violations": 0,
+        "switches": 4,
+        "trace": [
+          {
+            "time_s": 4,
+            "energy_mj": 1.96,
+            "gap_s": 0.6097747618402898,
+            "action": "ATTACK",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 8,
+            "energy_mj": 1.8399999999999999,
+            "gap_s": 0.6229744701306812,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 12,
+            "energy_mj": 1.7199999999999998,
+            "gap_s": 0.632884524156726,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 16,
+            "energy_mj": 1.5999999999999996,
+            "gap_s": 0.6321074761176836,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 20,
+            "energy_mj": 1.4799999999999995,
+            "gap_s": 0.6258743786565805,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 24,
+            "energy_mj": 1.3599999999999994,
+            "gap_s": 0.6077415225355198,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 28,
+            "energy_mj": 1.2399999999999993,
+            "gap_s": 0.5903303896456285,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 32,
+            "energy_mj": 1.1199999999999992,
+            "gap_s": 0.5890018397023914,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 36,
+            "energy_mj": 0.9999999999999992,
+            "gap_s": 0.5817668115365384,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 40,
+            "energy_mj": 0.8799999999999992,
+            "gap_s": 0.5670860845728461,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 44,
+            "energy_mj": 0.9199999999999993,
+            "gap_s": 0.6274034622113763,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 48,
+            "energy_mj": 0.9599999999999993,
+            "gap_s": 0.6920034839478272,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 52,
+            "energy_mj": 0.9999999999999993,
+            "gap_s": 0.7578684766722528,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 56,
+            "energy_mj": 0.8799999999999993,
+            "gap_s": 0.7434478528601799,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 60,
+            "energy_mj": 0.9199999999999994,
+            "gap_s": 0.7977962071785478,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          }
+        ]
+      },
+      {
+        "controller": "Reserve-aware HOLD",
+        "final_energy_mj": 0.7599999999999988,
+        "final_gap_s": 0.6902762071785478,
+        "progress_s": 0.009723792821452193,
+        "reserve_violations": 0,
+        "switches": 2,
+        "trace": [
+          {
+            "time_s": 4,
+            "energy_mj": 2.28,
+            "gap_s": 0.7096147618402897,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 8,
+            "energy_mj": 2.1599999999999997,
+            "gap_s": 0.7228144701306811,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 12,
+            "energy_mj": 2.0399999999999996,
+            "gap_s": 0.732724524156726,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 16,
+            "energy_mj": 1.9199999999999995,
+            "gap_s": 0.7319474761176835,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 20,
+            "energy_mj": 1.7999999999999994,
+            "gap_s": 0.7257143786565804,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 24,
+            "energy_mj": 1.6799999999999993,
+            "gap_s": 0.7075815225355198,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 28,
+            "energy_mj": 1.5599999999999992,
+            "gap_s": 0.6901703896456284,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 32,
+            "energy_mj": 1.439999999999999,
+            "gap_s": 0.6888418397023913,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 36,
+            "energy_mj": 1.319999999999999,
+            "gap_s": 0.6816068115365383,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 40,
+            "energy_mj": 1.1999999999999988,
+            "gap_s": 0.6669260845728461,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 44,
+            "energy_mj": 1.0799999999999987,
+            "gap_s": 0.6581234622113762,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 48,
+            "energy_mj": 0.9599999999999987,
+            "gap_s": 0.6536034839478271,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 52,
+            "energy_mj": 0.8399999999999987,
+            "gap_s": 0.6503484766722527,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 56,
+            "energy_mj": 0.8799999999999988,
+            "gap_s": 0.7050478528601799,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 60,
+            "energy_mj": 0.7599999999999988,
+            "gap_s": 0.6902762071785478,
+            "action": "HOLD",
+            "simulator_fallback": false
+          }
+        ]
+      },
+      {
+        "controller": "Greedy one-stage",
+        "final_energy_mj": 0.7600000000000003,
+        "final_gap_s": 0.8054762071785477,
+        "progress_s": -0.10547620717854778,
+        "reserve_violations": 0,
+        "switches": 6,
+        "trace": [
+          {
+            "time_s": 4,
+            "energy_mj": 1.96,
+            "gap_s": 0.6097747618402898,
+            "action": "ATTACK",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 8,
+            "energy_mj": 1.52,
+            "gap_s": 0.5231344701306812,
+            "action": "ATTACK",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 12,
+            "energy_mj": 1.08,
+            "gap_s": 0.43320452415672595,
+            "action": "ATTACK",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 16,
+            "energy_mj": 0.9600000000000001,
+            "gap_s": 0.43242747611768345,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 20,
+            "energy_mj": 0.8400000000000001,
+            "gap_s": 0.42619437865658033,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 24,
+            "energy_mj": 0.7200000000000001,
+            "gap_s": 0.40806152253551964,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 28,
+            "energy_mj": 0.7600000000000001,
+            "gap_s": 0.4597703896456282,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 32,
+            "energy_mj": 0.8000000000000002,
+            "gap_s": 0.5275618397023912,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 36,
+            "energy_mj": 0.8400000000000002,
+            "gap_s": 0.5894468115365383,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 40,
+            "energy_mj": 0.7200000000000002,
+            "gap_s": 0.5747660845728461,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 44,
+            "energy_mj": 0.7600000000000002,
+            "gap_s": 0.6350834622113762,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 48,
+            "energy_mj": 0.8000000000000003,
+            "gap_s": 0.6996834839478271,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 52,
+            "energy_mj": 0.8400000000000003,
+            "gap_s": 0.7655484766722527,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 56,
+            "energy_mj": 0.7200000000000003,
+            "gap_s": 0.7511278528601798,
+            "action": "HOLD",
+            "simulator_fallback": false
+          },
+          {
+            "time_s": 60,
+            "energy_mj": 0.7600000000000003,
+            "gap_s": 0.8054762071785477,
+            "action": "CONSERVE",
+            "simulator_fallback": false
+          }
+        ]
+      }
+    ],
+    "latency_ms": 88.18503499969665,
+    "scope": "Synthetic closed-loop comparison; not real racing accuracy or proof of overtaking.",
+    "fallback": "If planner abstains, simulator applies CONSERVE and marks the frame."
+  },
+  "limitations": "Synthetic evidence only; no real-world prediction accuracy claim."
+}
