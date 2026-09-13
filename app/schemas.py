@@ -158,6 +158,63 @@ class State(StrictModel):
         ),
     )
 
+    own_throttle: float = Field(
+        0,
+        ge=0,
+        le=100,
+    )
+
+    rival_throttle: float = Field(
+        0,
+        ge=0,
+        le=100,
+    )
+
+    own_brake: float = Field(
+        0,
+        ge=0,
+        le=100,
+    )
+
+    rival_brake: float = Field(
+        0,
+        ge=0,
+        le=100,
+    )
+
+    own_drs: int = Field(
+        0,
+        ge=0,
+        le=20,
+    )
+
+    rival_drs: int = Field(
+        0,
+        ge=0,
+        le=20,
+    )
+
+    speed_delta_roll_mean: float | None = Field(
+        default=None,
+        ge=-80,
+        le=80,
+        description=(
+            "Rolling mean of own_speed_kph minus "
+            "rival_speed_kph. None means the caller "
+            "did not supply a roll window."
+        ),
+    )
+
+    speed_delta_roll_std: float | None = Field(
+        default=None,
+        ge=0,
+        le=80,
+        description=(
+            "Rolling standard deviation of the same "
+            "speed delta. None means noise is unknown."
+        ),
+    )
+
     own_energy_mj: float = Field(
         ge=0,
         le=20,

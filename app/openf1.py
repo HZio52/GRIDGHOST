@@ -22,6 +22,19 @@ import httpx
 from .schemas import State
 
 
+def _car_num(sample, key, default=0.0, lo=0.0, hi=100.0):
+    if not sample:
+        return default
+    raw = sample.get(key)
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        return default
+    if not math.isfinite(value):
+        return default
+    return min(hi, max(lo, value))
+
+
 BASE_URL = "https://api.openf1.org/v1"
 
 ENDPOINTS = {
@@ -405,6 +418,8 @@ def normalize(
 
     previous_gap_timestamp_s = None
 
+    speed_deltas = []
+
     for row in own_rows:
 
         date = row.get(
@@ -607,6 +622,25 @@ def normalize(
         )
 
         # ----------------------------------------------------
+        # Pedals, DRS, rolling speed delta
+        # ----------------------------------------------------
+
+        rival_sample = rival_car[0]
+        delta_kph = float(own_speed) - float(rival_speed)
+        speed_deltas.append(delta_kph)
+        if len(speed_deltas) > 5:
+            speed_deltas.pop(0)
+        roll_mean = sum(speed_deltas) / len(speed_deltas)
+        if len(speed_deltas) >= 2:
+            roll_var = sum(
+                (item - roll_mean) ** 2
+                for item in speed_deltas
+            ) / (len(speed_deltas) - 1)
+            roll_std = math.sqrt(max(0.0, roll_var))
+        else:
+            roll_std = 0.0
+
+        # ----------------------------------------------------
         # Build validated GRIDGHOST state
         # ----------------------------------------------------
 
@@ -624,6 +658,30 @@ def normalize(
 
             gap_rate_s_per_s=
                 gap_rate_s_per_s,
+
+            own_throttle=
+                _car_num(row, "throttle"),
+
+            rival_throttle=
+                _car_num(rival_sample, "throttle"),
+
+            own_brake=
+                _car_num(row, "brake"),
+
+            rival_brake=
+                _car_num(rival_sample, "brake"),
+
+            own_drs=
+                int(_car_num(row, "drs", 0, 0, 20)),
+
+            rival_drs=
+                int(_car_num(rival_sample, "drs", 0, 0, 20)),
+
+            speed_delta_roll_mean=
+                roll_mean,
+
+            speed_delta_roll_std=
+                roll_std,
 
             own_energy_mj=
                 energy_mj,

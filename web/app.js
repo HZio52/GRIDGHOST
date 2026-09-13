@@ -1,7 +1,7 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const stateFields=['own_speed_kph','rival_speed_kph','gap_s','own_energy_mj','data_age_s','track_status'];
-let scenarios=[],currentRequest=null,currentResult=null,lastEvaluatedRequest=null,replay=[],replayIndex=0,replayBelief=null,replayPolicy=null,apiKey='',apiSession=false,busy=false,history=[],lastSpokenAction='',lastWasAbstain=false,radio=null,radioVoices={engineer:null,driver:null},engineerTalking=false,noiseNode=null,speechUnlocked=false,circuitViz=null,circuitHotTimer=null,arenaViz=null,flowWalkTimer=null,flowFocus='flow-n-snap';
+let scenarios=[],currentRequest=null,currentResult=null,lastEvaluatedRequest=null,replay=[],replayIndex=0,replayBelief=null,replayPolicy=null,apiKey='',apiSession=false,busy=false,history=[],lastSpokenAction='',lastSpokenLine='',lastWasAbstain=false,radio=null,radioVoices={engineer:null,driver:null},engineerTalking=false,noiseNode=null,speechUnlocked=false,circuitViz=null,circuitHotTimer=null,arenaViz=null,flowWalkTimer=null,flowFocus='flow-n-snap';
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=(v,d=2)=>Number.isFinite(v)?Number(v).toFixed(d):'—';
 const CALL_NAME={ATTACK:'COMMIT',DEFEND:'PROBE',HOLD:'HOLD',CONSERVE:'CONSERVE',REASSESS:'NO CALL',NO_RECOMMENDATION:'NO CALL'};
@@ -454,9 +454,9 @@ function afterPlan(result,save){
     if(abstain&&!lastWasAbstain)flickerHero();
     lastWasAbstain=abstain;
     const action=(($('action')&&$('action').textContent)||'').trim();
-    const changed=!!action&&action!==lastSpokenAction;
-    if(changed)lastSpokenAction=action;
     const line=radioLine(action,prettyReason(result),result.status);
+    const changed=!!line&&line!==lastSpokenLine;
+    if(changed){lastSpokenAction=action;lastSpokenLine=line;}
     if(changed&&save)speakUtterance('engineer',line,()=>speakUtterance('driver',`Roger. ${action}.`));
     else if(changed)speakUtterance('engineer',line);
     else if(save)speakUtterance('driver',`Roger. ${action||'copy'}.`);
@@ -602,6 +602,73 @@ function refreshArenaHud(rep,gap){
   const dock=$('arena-dock');
   if(dock&&dock.dataset)dock.dataset.call=rep.call;
 }
+function liveState(){
+  return (lastEvaluatedRequest&&lastEvaluatedRequest.state)||(currentRequest&&currentRequest.state)||{};
+}
+function phiStd(z){
+  const a=Math.abs(z);
+  const t=1/(1+0.2316419*a);
+  const d=0.3989423*Math.exp(-0.5*z*z);
+  const p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+  return z>0?1-p:p;
+}
+function rivalPaceModel(st){
+  const own=Number(st.own_speed_kph),riv=Number(st.rival_speed_kph);
+  const instant=(Number.isFinite(own)&&Number.isFinite(riv))?(own-riv):0;
+  const hasMean=Number.isFinite(st.speed_delta_roll_mean);
+  const hasStd=Number.isFinite(st.speed_delta_roll_std);
+  const mean=hasMean?Number(st.speed_delta_roll_mean):instant;
+  const std=hasStd?Math.max(0,Number(st.speed_delta_roll_std)):null;
+  const sigma=Math.max(std==null?12:std,0.35);
+  const match=2.5;
+  const faster=phiStd((-match-mean)/sigma);
+  const slower=Math.max(0,1-phiStd((match-mean)/sigma));
+  const mid=Math.max(0,1-faster-slower);
+  const pos=Math.max(0,Math.min(1,0.5-0.5*Math.tanh(mean/12)));
+  const width=std==null?0.36:Math.min(0.62,0.08+0.55*(1-Math.exp(-std/8)));
+  const dir=mean>2?'slower':mean<-2?'faster':'matched';
+  const src=hasMean&&hasStd?'roll window':hasMean?'roll mean · std missing':hasStd?'roll std · mean from speeds':'instant speeds · std unknown';
+  const label=`Rival ${dir} · ${Math.round(dir==='slower'?slower*100:dir==='faster'?faster*100:mid*100)}% · ${src}`;
+  return {mean,std,pos,width,dir,slower,matched:mid,faster,label,sourced:hasMean||hasStd};
+}
+function drsLabel(v){
+  const n=Number(v);
+  if(!Number.isFinite(n)||n<=0)return 'off';
+  if(n>=10)return 'active';
+  if(n>=8)return 'available';
+  return 'off';
+}
+function pedalLabel(th,br){
+  if(Number(br)>50||Number(br)===1)return 'brake';
+  const t=Number(th);
+  if(Number.isFinite(t)&&t>=8)return `${fmt(t,0)}% throttle`;
+  return 'coast';
+}
+function gapTrend(gap,rate){
+  if(!Number.isFinite(rate))return {word:'—',text:'not in this snapshot'};
+  const mag=Math.abs(rate);
+  if(mag<0.005)return {word:'stable',text:`stable ${fmt(rate,3)} s/s`};
+  const closing=Number.isFinite(gap)&&gap*rate<0;
+  const word=closing?'closing':'opening';
+  return {word,text:`${word} ${fmt(mag,3)} s/s`};
+}
+function energyRange(point,unc,unit){
+  const p=Number(point),u=Number(unc);
+  if(!Number.isFinite(p))return '—';
+  if(!Number.isFinite(u)||u<=0)return `${fmt(p)} ${unit}`;
+  return `${fmt(p)} ${unit} · ${fmt(Math.max(0,p-u))}–${fmt(p+u)}`;
+}
+function inspectSection(title,rows){
+  if(!rows||!rows.length)return '';
+  return `<div class="arena-sub"><span>${esc(title)}</span><div class="arena-kv">${rows.map(([k,v])=>`<span>${esc(k)}</span><strong>${esc(v)}</strong>`).join('')}</div></div>`;
+}
+function rivalPaceHtml(st){
+  const m=rivalPaceModel(st);
+  const left=Math.max(0,Math.min(1,m.pos-m.width/2));
+  const right=Math.max(0,Math.min(1,m.pos+m.width/2));
+  const w=Math.max(0.04,right-left);
+  return `<div class="arena-pace"><div class="arena-pace-scale"><span>Slower</span><span>Matched</span><span>Faster</span></div><div class="arena-pace-track" role="img" aria-label="${esc(m.label)}"><i class="arena-pace-band" style="left:${(left*100).toFixed(1)}%;width:${(w*100).toFixed(1)}%"></i><i class="arena-pace-mark" style="left:${(Math.max(0,Math.min(1,m.pos))*100).toFixed(1)}%"></i></div><p class="arena-pace-note">${esc(m.label)}</p></div>`;
+}
 function selectArenaCar(who){
   try{
     if(arenaViz){arenaViz.focus=who;arenaViz.follow=true;}
@@ -620,24 +687,28 @@ function refreshArenaInspect(){
     const own=who==='own';
     const rep=arenaReport();
     const gap=readCircuitGap();
-    const req=currentRequest||{};
-    const st=req.state||{};
     const result=currentResult;
     const title=$('arena-inspect-title');
     const kick=$('arena-inspect-kicker');
     const lead=$('arena-inspect-lead');
-    if(title)title.textContent=own?'GG-01 · GridGhost':'RIV-88 · Rival';
     if(kick)kick.textContent=own?'OUR CAR':'RIVAL CAR';
     const lap=arenaLapInfo(own?'own':'rival');
-    const other=arenaLapInfo(own?'rival':'own');
-    if(lead)lead.textContent=own
-      ?(arenaMotionSpeed(rep)>0
+    const lapBit=lap.finished?`finished ${lap.total}`:`lap ${lap.current}/${lap.total}`;
+    const side=gap>0.005?'ahead':gap<-0.005?'behind':'alongside';
+    const live=liveState();
+    if(own){
+      if(title)title.textContent='GG-01 · GridGhost';
+      if(lead)lead.textContent=arenaMotionSpeed(rep)>0
         ?`On track. Lap ${lap.current} / ${lap.total}. ${rep.call} ${rep.live?`deploys ${rep.kw} kW.`:`holds deploy · ${rep.reasons[0]||'waiting'}`}`
-        :`Stopped. ${rep.reasons.join(' · ')}`)
-      :`Lap ${lap.current} / ${lap.total}. Gap ${gap>0?'ahead':gap<0?'behind':'alongside'} ${fmt(Math.abs(gap),2)}s · ${fmt(readRivalSpeed(),0)} km/h.`;
+        :`Stopped. ${rep.reasons.join(' · ')}`;
+    }else{
+      if(title)title.textContent=`RIV-88 · ${lapBit} · ${side} ${fmt(Math.abs(gap),2)}s · ${fmt(readRivalSpeed(),0)} km/h`;
+      if(lead)lead.textContent='Rolling pace vs us. Pedals and our battery from this snapshot.';
+    }
     const lapRow=lap.finished
       ?[`Lap`,`Finished · ${lap.total} / ${lap.total}`]
       :[`Lap`,`${lap.current} / ${lap.total}`];
+    const energyPt=Number.isFinite(rep.energy)?rep.energy:live.own_energy_mj;
     const rows=own?[
       ['Race',`Silverstone · ${lap.total} laps`],
       lapRow,
@@ -647,31 +718,37 @@ function refreshArenaInspect(){
       ['Speed',`${fmt(rep.own,0)} km/h`],
       ['Call pace',`${fmt(arenaMotionSpeed(rep),0)} km/h · ${rep.live?rep.call:'no deploy'}`],
       ['Deploy',`${rep.kw} kW · ${rep.call}`],
-      ['Energy',`${fmt(Number.isFinite(rep.energy)?rep.energy:st.own_energy_mj)} MJ`],
+      ['Energy',energyRange(energyPt,live.energy_uncertainty_mj,'MJ')],
+      ['Recovery',energyRange(live.recovery_kw,live.recovery_uncertainty_kw,'kW')],
       ['Data age',`${fmt(Number.isFinite(rep.age)?rep.age:0,1)} s`],
       ['Track',rep.track],
       ['Safer finish',($('finish')&&$('finish').textContent)||'—'],
       ['Must-keep',($('required')&&$('required').textContent)||'—'],
       ['Compute',($('latency')&&$('latency').textContent)||'—']
-    ]:[
-      ['Race',`Silverstone · ${lap.total} laps`],
-      lapRow,
-      ['This lap',`${fmt(lap.km,2)} / ${ARENA_KM} km · ${Math.round(lap.frac*100)}%`],
-      ['Laps left',lap.finished?'0':fmt(lap.remain,2)],
-      ['Pace',`${fmt(lap.lapS,1)} s / lap`],
-      ['Vs us',`${arenaLapDelta()} · we are lap ${other.current}`],
-      ['Rival speed',`${fmt(readRivalSpeed(),0)} km/h`],
-      ['Gap',`${fmt(gap,2)} s`],
-      ['Relative',gap>0.005?'Ahead of us':gap<-0.005?'Behind us':'Alongside'],
-      ['Our call',rep.call],
-      ['Track',rep.track]
-    ];
-    if(result&&result.belief&&!own){
-      rows.push(['Rival slower',`${Math.round(result.belief.slow*100)}%`]);
-      rows.push(['Rival matched',`${Math.round(result.belief.neutral*100)}%`]);
-      rows.push(['Rival faster',`${Math.round(result.belief.fast*100)}%`]);
+    ]:null;
+    let html='';
+    if(own){
+      html=`<div class="arena-kv">${rows.map(([k,v])=>`<span>${esc(k)}</span><strong>${esc(v)}</strong>`).join('')}</div>`;
+    }else{
+      const rate=Number(live.gap_rate_s_per_s);
+      const trend=gapTrend(gap,rate);
+      html+=rivalPaceHtml(live);
+      html+=inspectSection('Trend',[
+        ['Gap rate',trend.text],
+        ['This lap',`${fmt(lap.km,2)} / ${ARENA_KM} km · ${Math.round(lap.frac*100)}%`],
+        ['Pace',`${fmt(lap.lapS,1)} s / lap`]
+      ]);
+      html+=inspectSection('Right now',[
+        ['DRS',`us ${drsLabel(live.own_drs)} · them ${drsLabel(live.rival_drs)}`],
+        ['Pedals',`us ${pedalLabel(live.own_throttle,live.own_brake)} · them ${pedalLabel(live.rival_throttle,live.rival_brake)}`],
+        ['Our call',rep.call],
+        ['Track',rep.track]
+      ]);
+      html+=inspectSection('Energy',[
+        ['Battery',energyRange(energyPt,live.energy_uncertainty_mj,'MJ')],
+        ['Recovery',energyRange(live.recovery_kw,live.recovery_uncertainty_kw,'kW')]
+      ]);
     }
-    let html=`<div class="arena-kv">${rows.map(([k,v])=>`<span>${esc(k)}</span><strong>${esc(v)}</strong>`).join('')}</div>`;
     if(own&&result&&result.candidates&&result.candidates.length){
       html+=`<div class="arena-kv">${result.candidates.map(c=>`<span>${esc(prettyCall(c.action))}</span><strong>${c.valid?esc(fmt(c.score_s,3))+'s':esc(prettyText((c.rejection_reasons||[]).join('; ')||'blocked'))}</strong>`).join('')}</div>`;
     }
@@ -936,7 +1013,7 @@ function highlightCircuit(result){
   }catch(e){}
 }
 async function evaluate(save=false,req=null){const input=req||readRequest();const r=await api(`/v2/plan?save=${save}`,input);render(r,input);highlightCircuit(r);afterPlan(r,save);if(save)toast(`Decision #${r.evaluation_id} saved with input and policy.`);return r;}
-function setView(name){document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!==name+'-view');document.querySelectorAll('.nav').forEach(b=>{const on=b.dataset.view===name;b.classList.toggle('active',on);try{if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}catch(e){}});try{document.body.classList.toggle('is-arena',name==='arena');document.body.classList.toggle('is-flow',name==='flow');document.body.classList.toggle('is-car',name==='car');}catch(e){}const names={pit:['PIT WALL','Next energy call','COMMIT, PROBE, HOLD or CONSERVE — or NO CALL if the picture is not safe.'],lab:['SCENARIO LAB','Three decision rules','Same start. Compare the full planner, HOLD-if-low, and greedy next-step.'],evidence:['EVIDENCE & HISTORY','Why this call','Rules, model facts, and saved calls you can reload.'],arena:['ENTER ARENA','Silverstone arena','Cars run from the live snapshot. COMMIT, PROBE, HOLD and CONSERVE change pace. Yellow and SC slow the field. Red stops.'],flow:['CALL FLOW','How a call is made','Snapshot in. Gates. Planner. Engineer to driver. How we tackle the rival.'],car:['CAR','Full car','The complete car stays in view. Road speed follows the snapshot and the next energy call.']};const meta=names[name]||names.pit;$('view-name').textContent=meta[0];$('page-title').textContent=meta[1];$('page-description').textContent=meta[2];if(name==='evidence')task(loadHistory);if(name==='arena'){ensureArena();refreshArenaInspect();}if(name==='flow'){refreshFlowLive();selectFlowNode(flowFocus||'flow-n-snap');fitFlowBoard();}try{if(typeof window!=='undefined'&&name==='car'&&typeof window.startCarCockpit==='function')window.startCarCockpit();if(typeof window!=='undefined'&&name!=='car'&&typeof window.stopCarCockpit==='function')window.stopCarCockpit();}catch(e){}}
+function setView(name){document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!==name+'-view');document.querySelectorAll('.nav').forEach(b=>{const on=b.dataset.view===name;b.classList.toggle('active',on);try{if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');}catch(e){}});try{document.body.classList.toggle('is-arena',name==='arena');document.body.classList.toggle('is-flow',name==='flow');}catch(e){}const names={pit:['PIT WALL','Next energy call','COMMIT, PROBE, HOLD or CONSERVE — or NO CALL if the picture is not safe.'],lab:['SCENARIO LAB','Three decision rules','Same start. Compare the full planner, HOLD-if-low, and greedy next-step.'],evidence:['EVIDENCE & HISTORY','Why this call','Rules, model facts, and saved calls you can reload.'],arena:['ENTER ARENA','Silverstone arena','Cars run from the live snapshot. COMMIT, PROBE, HOLD and CONSERVE change pace. Yellow and SC slow the field. Red stops.'],flow:['CALL FLOW','How a call is made','Snapshot in. Gates. Planner. Engineer to driver. How we tackle the rival.']};const meta=names[name]||names.pit;$('view-name').textContent=meta[0];$('page-title').textContent=meta[1];$('page-description').textContent=meta[2];if(name==='evidence')task(loadHistory);if(name==='arena'){ensureArena();refreshArenaInspect();}if(name==='flow'){refreshFlowLive();selectFlowNode(flowFocus||'flow-n-snap');fitFlowBoard();}}
 async function loadHistory(){history=await api('/v2/history');$('history').innerHTML=history.length?history.map(h=>`<tr><td>#${h.id}</td><td>${esc(new Date(h.created).toLocaleString())}</td><td data-call="${esc(prettyCall(h.output.recommendation))}">${esc(prettyCall(h.output.recommendation))}</td><td>${fmt(h.input.state.own_energy_mj)} MJ</td><td>${fmt(h.output.latency_ms,1)} ms</td><td><button class="quiet" data-load="${h.id}">Inspect ↗</button></td></tr>`).join(''):'<tr><td colspan="6">No saved calls yet. Use “Save decision” on the pit wall.</td></tr>';$('history').querySelectorAll('[data-load]').forEach(btn=>btn.onclick=()=>{const h=history.find(h=>h.id===+btn.dataset.load);loadRequest(h.input);render(h.output,h.input);$('scenario-description').textContent=`Saved evaluation #${h.id}`;setView('pit');});}
 function setLive(on,label){try{document.body.classList.toggle('is-live',!!on);$('connection').classList.toggle('is-live',!!on);}catch(e){}$('connection').textContent=label||(on?'API connected':'Local demo');const feed=$('feed-status');if(feed){feed.hidden=!on;if(on)feed.textContent='API connected · snapshot taken automatically';}}
 function setTape(index,total,label){$('replay-progress').textContent=label?`${index} / ${total} ${label}`:`${index} / ${total}`;const fill=$('tape-fill');if(fill&&fill.style)fill.style.width=total>0?`${Math.min(100,index/total*100)}%`:'0%';}
@@ -968,14 +1045,11 @@ try{$('flow-reset').onclick=()=>resetFlow();}catch(e){}
 try{$('flow-lane').onchange=()=>applyFlowLane();}catch(e){}
 try{$('flow-to-pit').onclick=()=>setView('pit');}catch(e){}
 try{$('flow-to-arena').onclick=()=>setView('arena');}catch(e){}
-try{$('car-to-pit').onclick=()=>setView('pit');}catch(e){}
-try{$('car-to-arena').onclick=()=>setView('arena');}catch(e){}
 try{$('flow-speak').onclick=()=>speakFlowRadio();}catch(e){}
 try{$('flow-open-related').onclick=()=>{const g=FLOW_META[flowFocus]&&FLOW_META[flowFocus].goto;setView(g||'pit');};}catch(e){}
 try{if(typeof addEventListener==='function')addEventListener('resize',()=>{try{fitFlowBoard();}catch(e){}});}catch(e){}
 try{$('arena-hit-own').onclick=()=>selectArenaCar('own');$('arena-hit-own').onkeydown=e=>{if(e&&(e.key==='Enter'||e.key===' ')){try{e.preventDefault();}catch(x){}selectArenaCar('own');}};}catch(e){}
 try{$('arena-hit-rival').onclick=()=>selectArenaCar('rival');$('arena-hit-rival').onkeydown=e=>{if(e&&(e.key==='Enter'||e.key===' ')){try{e.preventDefault();}catch(x){}selectArenaCar('rival');}};}catch(e){}
-try{if(typeof window!=='undefined')window.arenaLapInfo=arenaLapInfo;}catch(e){}
 startCircuit();
 startArena();
 task(init);
