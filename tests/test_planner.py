@@ -50,7 +50,7 @@ def test_web_and_audit_round_trip(tmp_path,request_body,monkeypatch):
     monkeypatch.delenv('API_KEY',raising=False)
     db=str(tmp_path/'audit.sqlite3')
     with TestClient(create_app(db)) as c:
-        assert 'Energy deployment' in c.get('/').text
+        assert 'Next energy call' in c.get('/').text
         assert c.get('/assets/app.js').status_code==200
         assert len(c.get('/v2/scenarios').json())==6
         r=c.post('/v2/plan?save=true',json=request_body.model_dump());assert r.status_code==200
