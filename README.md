@@ -24,63 +24,9 @@ Visual language is red, white and black, informed by the [public Haas F1 site](h
 
 ## How a call is made
 
-```mermaid
-flowchart TB
-  subgraph SENSE["1 · Sense"]
-    SNAP[Race snapshot]
-    RIV[Rival telemetry]
-  end
+![GridGhost call flow: Sense, Gates, Brain, Call, Radio, Track](docs/call-flow.jpg)
 
-  subgraph GATES["2 · Gates"]
-    FLAG{GREEN?}
-    AGE{Age ≤ 5 s?}
-    MOVE{Speed ≥ 30?}
-    EN{Energy legal?}
-    NO[NO CALL]
-  end
-
-  subgraph BRAIN["3 · Brain"]
-    MIX[Pace mix]
-    XGB[XGBoost]
-    PLAN[Planner 24 s]
-    SHIELD[Energy shield]
-  end
-
-  subgraph CALL["4 · Call"]
-    COMMIT[COMMIT 120 kW]
-    PROBE[PROBE 80 kW]
-    HOLD[HOLD 40 kW]
-    SAVE[CONSERVE 0 kW]
-  end
-
-  subgraph RADIO["5 · Radio"]
-    ENG[Engineer]
-    DRV[Roger]
-  end
-
-  subgraph TRACK["6 · Track"]
-    FIGHT[Rival fight]
-    ARENA[Arena]
-  end
-
-  SNAP --> FLAG & AGE & MOVE & EN
-  RIV --> MIX & FIGHT
-  FLAG & AGE -->|pass| MIX
-  MOVE -->|pass| PLAN
-  EN -->|pass| SHIELD
-  FLAG & AGE & MOVE & EN -->|fail| NO
-  MIX --> XGB & PLAN
-  XGB --> PLAN
-  XGB -->|unsure| NO
-  PLAN --> SHIELD
-  SHIELD --> COMMIT & PROBE & HOLD & SAVE
-  SHIELD -->|blocked| NO
-  COMMIT & PROBE & HOLD & SAVE & NO --> ENG
-  ENG --> DRV --> FIGHT & ARENA
-  FIGHT --> ARENA
-```
-
-Failed gates stay on the board as **NO CALL**. The model never skips the energy rules.
+Green = pass. Red = fail / blocked / NO CALL. Orange = the chosen call. Purple = rival data into the pace mix. The model never skips the energy rules.
 
 ---
 
